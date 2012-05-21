@@ -11,33 +11,30 @@ respond(function ($request, $response, $app) {
 });
 
 respond('/', function ($request, $response) {
-    $response->render('html/home.html');
+	$response->render('html/home.html');
 });
 
-respond('/shorten?', function($request, $response, $app) {
+respond('/shorten', function($request, $response, $app) {
 	global $config;
 
-	$url = $request->param('url');
+	$url = $_POST['url'];
+
+	if(!$_POST['url']) exit(json_encode(array('status' => 'error', 'message' => 'No URL inserted!')));
 	if(!filter_var($url, FILTER_VALIDATE_URL)) exit(json_encode(array('status' => 'error', 'message' => 'This is not a url!')));
 
 	$short = getShort();
 
-	if(!$app->db->where(array('short' => $short))->get('urls')) {
-
-		$app->db->insert('urls', array('url' => $url, 'short' => $short));
-		echo json_encode(array('status' => 'success', 'short' => $config['site']['base_url'].'s/'.$short));
-
-	}
-
+	$app->db->insert('urls', array('url' => $url, 'short' => $short));
+	echo json_encode(array('status' => 'success', 'short' => $config['site']['base_url'].'s/'.$short));
 });
 
 respond('/s/[:shorturl]', function ($request, $response, $app) {
-    $shorturl = $request->param('shorturl');
-    
-    $url = $app->db->where(array('short' => $shorturl))->get('urls');
-    $url = $url[0];
+	$shorturl = $request->param('shorturl');
+	
+	$url = $app->db->where(array('short' => $shorturl))->get('urls');
+	$url = $url[0];
 
-    $response->redirect($url['url']);
+	$response->redirect($url['url']);
 });
 
 function getShort() {

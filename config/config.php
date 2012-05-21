@@ -1,6 +1,6 @@
 <?php
 
-$config['site']['base_url'] = 'http://mc.cm/';
+$config['site']['base_url'] = 'http://localhost/';
 
 $config['mongo']['hostbase'] = 'localhost:27017';
 $config['mongo']['database'] = 'mccm';

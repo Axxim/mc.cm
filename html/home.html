@@ -51,7 +51,7 @@
 
 					var url = $("#url").val();
 
-					$.get( "/shorten", { url: url },
+					$.post( "/shorten", { url: url },
 						function( data ) {
 							data = JSON.parse(data)
 							if(data.status === "error") {
@@ -71,7 +71,7 @@
 		<div id="box">
 			<h1><a href="/">mc.cm</a></h1>
 			<h2>Shorten dem urls!</h2>
-			<form method="get" name="shorten" action="/shorten" class="form-inline">
+			<form method="post" name="shorten" action="/shorten" class="form-inline">
 				<input type="text" class="span4" id="url" name="url" placeholder="URL to shorten">
 				<input type="submit" class="btn btn-primary" value="Shorten">
 			</form>
