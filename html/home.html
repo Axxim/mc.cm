@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+		<title>mc.cm URL Shortener</title>
+
+		<script type='text/javascript' src='https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js'></script>
+
+		<link href="http://ignite.io/css/bootstrap.css" rel="stylesheet">
+		<style type='text/css'>
+		@import url(http://fonts.googleapis.com/css?family=Londrina+Solid);
+		body {
+			background-color: #FFFFFF;
+		}
+		#box {
+			width: 500px;
+			height: 400px;
+			top: 50%;
+			left: 50%;
+			position: absolute;
+			margin-top: -200px;
+			margin-left: -250px;
+
+			text-align: center;
+		}
+		#box h1 {
+			font-family: 'Londrina Solid', cursive;
+			font-size: 100px;
+			padding: 0px;
+			margin: 0px;
+		}
+		#box h1 a {
+			color: #000000;
+			text-decoration: none;
+		}
+		#box h2 {
+			font-family: 'Londrina Solid', cursive;
+			font-size: 20px;
+			padding: 0px;
+			margin: 0px;
+			margin-top: 10px;
+			margin-bottom: 20px;
+		}
+		</style>
+
+		<script type='text/javascript'>
+			$(window).load(function(){
+
+				$("form").submit(function(event) {
+					event.preventDefault();
+
+					var url = $("#url").val();
+
+					$.get( "/shorten", { url: url },
+						function( data ) {
+							data = JSON.parse(data)
+							if(data.status === "error") {
+								$('#url').val(data.message)
+							} else {
+								$("#url").val(data.short)
+							}
+							$('#url').select()
+						}
+					)
+				})
+				
+			})
+		</script>
+	</head>
+	<body>
+		<div id="box">
+			<h1><a href="/">mc.cm</a></h1>
+			<h2>Shorten dem urls!</h2>
+			<form method="get" name="shorten" action="/shorten" class="form-inline">
+				<input type="text" class="span4" id="url" name="url" placeholder="URL to shorten">
+				<input type="submit" class="btn btn-primary" value="Shorten">
+			</form>
+			<p>Copyright <a href="http://axxim.net/">Axxim, LLC</a> 2012</p>
+		</div>
+	</body>
+</html>
+
